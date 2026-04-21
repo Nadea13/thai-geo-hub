@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thai-geo-hub.vercel.app/sitemap.xml

@@ -2,6 +2,7 @@ import Link from "next/link";
 import hierarchy from "@/data/geo-hierarchy.json";
 import { notFound } from "next/navigation";
 import AdSlot from "@/components/AdSlot";
+import AgodaAffiliate from "@/components/AgodaAffiliate";
 
 export default async function SubdistrictPage({ params }: { params: Promise<{ province: string, district: string, subdistrict: string }> }) {
   const { province: encodedProvince, district: encodedDistrict, subdistrict: encodedSubdistrict } = await params;
@@ -28,7 +29,7 @@ export default async function SubdistrictPage({ params }: { params: Promise<{ pr
       </div>
 
       <div className="glass-card" style={{ maxWidth: "800px", margin: "0 auto", padding: "3rem", textAlign: "center" }}>
-        <AdSlot id="top-ad" label="Top Advertisement" />
+        <AdSlot adSlot="2789183587" />
         
         <span className="badge" style={{ marginBottom: "1rem" }}>ข้อมูลตำบล/แขวง</span>
         <h1 style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{subdistrict}</h1>
@@ -65,7 +66,7 @@ export default async function SubdistrictPage({ params }: { params: Promise<{ pr
           </div>
         </div>
         
-        <AdSlot id="mid-ad" label="In-Content Ad" />
+        <AdSlot adSlot="2789183587" />
 
         {item.lat && item.lng && (
           <div style={{ marginTop: "2rem" }}>
@@ -81,29 +82,9 @@ export default async function SubdistrictPage({ params }: { params: Promise<{ pr
           </div>
         )}
 
-        <div style={{ marginTop: "3rem", textAlign: "left" }}>
-          <h3 style={{ borderBottom: "2px solid var(--card-border)", paddingBottom: "0.5rem" }}>การเดินทางและที่พัก</h3>
-          <p style={{ fontSize: "0.875rem", color: "var(--secondary)", margin: "1rem 0" }}>
-            กำลังวางแผนเดินทางไปที่ {subdistrict} หรือ {district} ใช่หรือไม่? ค้นหาข้อเสนอที่ดีที่สุดได้ที่นี่:
-          </p>
-          <div className="grid" style={{ gridTemplateColumns: "1fr", gap: "1rem" }}>
-            <a 
-              href={`https://www.agoda.com/search?city=${encodeURIComponent(district + " " + province)}&cid=1897000`} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="glass-card"
-              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "linear-gradient(90deg, #10294d, #1f4e91)", color: "white" }}
-            >
-              <div>
-                <div style={{ fontWeight: 700 }}>จองโรงแรมใน {district}</div>
-                <div style={{ fontSize: "0.75rem", opacity: 0.8 }}>ราคาพิเศษเฉพาะวันนี้บน Agoda</div>
-              </div>
-              <div style={{ fontSize: "1.5rem" }}>→</div>
-            </a>
-          </div>
-        </div>
+        <AgodaAffiliate locationName={`${district}, ${province}`} />
 
-        <AdSlot id="bottom-ad" label="Bottom Advertisement" />
+        <AdSlot adSlot="2789183587" />
       </div>
     </div>
   );

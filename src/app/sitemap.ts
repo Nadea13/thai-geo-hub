@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import geoData from '@/data/geo-data.json';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://thaigeohub.com'; // User should update this after deployment
+  const baseUrl = 'https://thai-geo-hub.vercel.app';
 
   // Home page
   const routes = [

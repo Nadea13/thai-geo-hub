@@ -1,6 +1,8 @@
 import Link from "next/link";
 import hierarchy from "@/data/geo-hierarchy.json";
 import { notFound } from "next/navigation";
+import AdSlot from "@/components/AdSlot";
+import AgodaAffiliate from "@/components/AgodaAffiliate";
 
 export default async function ProvincePage({ params }: { params: Promise<{ province: string }> }) {
   const { province: encodedProvince } = await params;
@@ -22,6 +24,8 @@ export default async function ProvincePage({ params }: { params: Promise<{ provi
         เลือกอำเภอในจังหวัด{province} เพื่อดูรหัสไปรษณีย์รายตำบล
       </p>
 
+      <AdSlot adSlot="2789183587" />
+
       <div className="grid">
         {districts.map((district) => (
           <Link key={district} href={`/p/${encodeURIComponent(province)}/${encodeURIComponent(district)}`}>
@@ -34,6 +38,8 @@ export default async function ProvincePage({ params }: { params: Promise<{ provi
           </Link>
         ))}
       </div>
+
+      <AgodaAffiliate locationName={province} />
     </div>
   );
 }

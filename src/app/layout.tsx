@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   title: "ค้นหารหัสไปรษณีย์และข้อมูลภูมิศาสตร์ประเทศไทย | Thai Geo Hub",
   description: "ระบบค้นหารหัสไปรษณีย์ จังหวัด อำเภอ ตำบล และพิกัด GPS ทั่วประเทศไทย ใช้งานง่าย รวดเร็ว และแม่นยำ",
   keywords: ["รหัสไปรษณีย์", "ประเทศไทย", "จังหวัด", "อำเภอ", "ตำบล", "พิกัด GPS", "Geography Thailand"],
+  other: {
+    "google-site-verification": "googlec86f42d6a7b76fdc.html",
+    "agoda-partner-site-verification": "AgodaPartnerVerification.html",
+  }
 };
 
 export default function RootLayout({
@@ -26,6 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th" className={`${inter.variable} ${outfit.variable}`}>
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4949559489862473"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body>
         <main>
           {children}
