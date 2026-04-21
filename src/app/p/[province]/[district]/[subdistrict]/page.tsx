@@ -3,8 +3,36 @@ import hierarchy from "@/data/geo-hierarchy.json";
 import { notFound } from "next/navigation";
 import AdSlot from "@/components/AdSlot";
 import AgodaAffiliate from "@/components/AgodaAffiliate";
+import { Metadata } from "next";
 
-export default async function SubdistrictPage({ params }: { params: Promise<{ province: string, district: string, subdistrict: string }> }) {
+type Props = {
+  params: Promise<{ province: string, district: string, subdistrict: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { province: encodedProvince, district: encodedDistrict, subdistrict: encodedSubdistrict } = await params;
+  const province = decodeURIComponent(encodedProvince);
+  const district = decodeURIComponent(encodedDistrict);
+  const subdistrict = decodeURIComponent(encodedSubdistrict);
+  
+  const title = `รหัสไปรษณีย์ ${subdistrict} อำเภอ${district} จังหวัด${province} - ข้อมูลพิกัด GPS`;
+  const description = `ค้นหารหัสไปรษณีย์ ${subdistrict} อำเภอ${district} จังหวัด${province} พร้อมข้อมูลพิกัดภูมิศาสตร์ Latitude Longitude และแผนที่การเดินทาง`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://thai-geo-hub.vercel.app/p/${encodedProvince}/${encodedDistrict}/${encodedSubdistrict}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    }
+  };
+}
+
+export default async function SubdistrictPage({ params }: Props) {
   const { province: encodedProvince, district: encodedDistrict, subdistrict: encodedSubdistrict } = await params;
   const province = decodeURIComponent(encodedProvince);
   const district = decodeURIComponent(encodedDistrict);
@@ -19,8 +47,31 @@ export default async function SubdistrictPage({ params }: { params: Promise<{ pr
   const item = subdistricts.find((s: any) => s.subdistrict === subdistrict);
   if (!item) notFound();
 
+  // JSON-LD for Search Engines
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "name": subdistrict,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": subdistrict,
+      "addressRegion": province,
+      "postalCode": item.zipcode,
+      "addressCountry": "TH"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": item.lat,
+      "longitude": item.lng
+    }
+  };
+
   return (
     <div className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="breadcrumb">
         <Link href="/">หน้าแรก</Link> / 
         <Link href={`/p/${encodeURIComponent(province)}`}>{province}</Link> / 

@@ -3,8 +3,34 @@ import hierarchy from "@/data/geo-hierarchy.json";
 import { notFound } from "next/navigation";
 import AdSlot from "@/components/AdSlot";
 import AgodaAffiliate from "@/components/AgodaAffiliate";
+import { Metadata } from "next";
 
-export default async function ProvincePage({ params }: { params: Promise<{ province: string }> }) {
+type Props = {
+  params: Promise<{ province: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { province: encodedProvince } = await params;
+  const province = decodeURIComponent(encodedProvince);
+  
+  const title = `รหัสไปรษณีย์จังหวัด${province} ทุกอำเภอ ทุกตำบล - Thai Geo Hub`;
+  const description = `รวมรหัสไปรษณีย์จังหวัด${province} ทุกอำเภอและตำบล พร้อมข้อมูลภูมิศาสตร์ครบถ้วน ค้นหาง่าย รวดเร็ว`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://thai-geo-hub.vercel.app/p/${encodedProvince}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    }
+  };
+}
+
+export default async function ProvincePage({ params }: Props) {
   const { province: encodedProvince } = await params;
   const province = decodeURIComponent(encodedProvince);
   const data = (hierarchy as any)[province];
@@ -13,8 +39,32 @@ export default async function ProvincePage({ params }: { params: Promise<{ provi
 
   const districts = Object.keys(data.districts).sort((a, b) => a.localeCompare(b, 'th'));
 
+  // JSON-LD for Breadcrumbs
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "หน้าแรก",
+        "item": "https://thai-geo-hub.vercel.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": province,
+        "item": `https://thai-geo-hub.vercel.app/p/${encodedProvince}`
+      }
+    ]
+  };
+
   return (
     <div className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <div className="breadcrumb">
         <Link href="/">หน้าแรก</Link> / <span>{province}</span>
       </div>

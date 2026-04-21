@@ -15,9 +15,24 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "ค้นหารหัสไปรษณีย์และข้อมูลภูมิศาสตร์ประเทศไทย | Thai Geo Hub",
+  title: {
+    default: "ค้นหารหัสไปรษณีย์และข้อมูลภูมิศาสตร์ประเทศไทย | Thai Geo Hub",
+    template: "%s | Thai Geo Hub",
+  },
   description: "ระบบค้นหารหัสไปรษณีย์ จังหวัด อำเภอ ตำบล และพิกัด GPS ทั่วประเทศไทย ใช้งานง่าย รวดเร็ว และแม่นยำ",
   keywords: ["รหัสไปรษณีย์", "ประเทศไทย", "จังหวัด", "อำเภอ", "ตำบล", "พิกัด GPS", "Geography Thailand"],
+  metadataBase: new URL("https://thai-geo-hub.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Thai Geo Hub - ค้นหารหัสไปรษณีย์และพิกัดภูมิศาสตร์ประเทศไทย",
+    description: "ระบบค้นหารหัสไปรษณีย์ จังหวัด อำเภอ ตำบล และพิกัด GPS ทั่วประเทศไทย",
+    url: "https://thai-geo-hub.vercel.app",
+    siteName: "Thai Geo Hub",
+    locale: "th_TH",
+    type: "website",
+  },
   other: {
     "google-site-verification": "googlec86f42d6a7b76fdc.html",
     "agoda-partner-site-verification": "AgodaPartnerVerification.html",
